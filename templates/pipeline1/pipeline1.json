@@ -1,0 +1,366 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory Name"
+		},
+		"AzureSqlDatabase1": {
+			"type": "string"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Data1",
+						"type": "Copy",
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource"
+							},
+							"sink": {
+								"type": "AzureSqlSink"
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "orderid",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "orderid",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "custid",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "custid",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "empid",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "empid",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "orderdate",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "orderdate",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "requireddate",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "requireddate",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "shippeddate",
+											"type": "DateTime"
+										},
+										"sink": {
+											"name": "shippeddate",
+											"type": "DateTime"
+										}
+									},
+									{
+										"source": {
+											"name": "shipperid",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "shipperid",
+											"type": "Int32"
+										}
+									},
+									{
+										"source": {
+											"name": "freight",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "freight",
+											"type": "Decimal"
+										}
+									},
+									{
+										"source": {
+											"name": "shipname",
+											"type": "String"
+										},
+										"sink": {
+											"name": "shipname",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "shipaddress",
+											"type": "String"
+										},
+										"sink": {
+											"name": "shipaddress",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "shipcity",
+											"type": "String"
+										},
+										"sink": {
+											"name": "shipcity",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "shipregion",
+											"type": "String"
+										},
+										"sink": {
+											"name": "shipregion",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "shippostalcode",
+											"type": "String"
+										},
+										"sink": {
+											"name": "shippostalcode",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "shipcountry",
+											"type": "String"
+										},
+										"sink": {
+											"name": "shipcountry",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "input",
+								"type": "DatasetReference"
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "output",
+								"type": "DatasetReference"
+							}
+						]
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/input')]",
+				"[concat(variables('factoryId'), '/datasets/output')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/input')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureSqlDatabase1')]",
+					"type": "LinkedServiceReference"
+				},
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "orderid",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "custid",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "empid",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "orderdate",
+						"type": "date"
+					},
+					{
+						"name": "requireddate",
+						"type": "date"
+					},
+					{
+						"name": "shippeddate",
+						"type": "date"
+					},
+					{
+						"name": "shipperid",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "freight",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "shipname",
+						"type": "nvarchar"
+					},
+					{
+						"name": "shipaddress",
+						"type": "nvarchar"
+					},
+					{
+						"name": "shipcity",
+						"type": "nvarchar"
+					},
+					{
+						"name": "shipregion",
+						"type": "nvarchar"
+					},
+					{
+						"name": "shippostalcode",
+						"type": "nvarchar"
+					},
+					{
+						"name": "shipcountry",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[Orders]"
+				}
+			}
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/output')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureSqlDatabase1')]",
+					"type": "LinkedServiceReference"
+				},
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "orderid",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "custid",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "empid",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "orderdate",
+						"type": "date"
+					},
+					{
+						"name": "requireddate",
+						"type": "date"
+					},
+					{
+						"name": "shippeddate",
+						"type": "date"
+					},
+					{
+						"name": "shipperid",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "freight",
+						"type": "money",
+						"precision": 19,
+						"scale": 4
+					},
+					{
+						"name": "shipname",
+						"type": "nvarchar"
+					},
+					{
+						"name": "shipaddress",
+						"type": "nvarchar"
+					},
+					{
+						"name": "shipcity",
+						"type": "nvarchar"
+					},
+					{
+						"name": "shipregion",
+						"type": "nvarchar"
+					},
+					{
+						"name": "shippostalcode",
+						"type": "nvarchar"
+					},
+					{
+						"name": "shipcountry",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"tableName": "[[dbo].[Orders1]"
+				}
+			}
+		}
+	]
+}
