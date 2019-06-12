@@ -69,10 +69,7 @@
 				"name": "shipcountry",
 				"type": "nvarchar"
 			}
-		],
-		"typeProperties": {
-			"tableName": "[dbo].[Orders1]"
-		}
+		]
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }
