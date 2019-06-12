@@ -43,12 +43,158 @@
 				},
 				"typeProperties": {
 					"source": {
-						"type": "AzureSqlSource"
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select * from orders\nwhere orderdate > '@{activity('max_date').output.firstrow.Max_orderdate}'\n"
 					},
 					"sink": {
 						"type": "AzureSqlSink"
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "orderid",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "orderid",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "custid",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "custid",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "empid",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "empid",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "orderdate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "orderdate",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "requireddate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "requireddate",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "shippeddate",
+									"type": "DateTime"
+								},
+								"sink": {
+									"name": "shippeddate",
+									"type": "DateTime"
+								}
+							},
+							{
+								"source": {
+									"name": "shipperid",
+									"type": "Int32"
+								},
+								"sink": {
+									"name": "shipperid",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"name": "freight",
+									"type": "Decimal"
+								},
+								"sink": {
+									"name": "freight",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"name": "shipname",
+									"type": "String"
+								},
+								"sink": {
+									"name": "shipname",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "shipaddress",
+									"type": "String"
+								},
+								"sink": {
+									"name": "shipaddress",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "shipcity",
+									"type": "String"
+								},
+								"sink": {
+									"name": "shipcity",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "shipregion",
+									"type": "String"
+								},
+								"sink": {
+									"name": "shipregion",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "shippostalcode",
+									"type": "String"
+								},
+								"sink": {
+									"name": "shippostalcode",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "shipcountry",
+									"type": "String"
+								},
+								"sink": {
+									"name": "shipcountry",
+									"type": "String"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
