@@ -2,7 +2,7 @@
 	"name": "output",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureSqlDatabase1",
+			"referenceName": "adftu",
 			"type": "LinkedServiceReference"
 		},
 		"type": "AzureSqlTable",
