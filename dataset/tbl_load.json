@@ -6,6 +6,12 @@
 			"type": "LinkedServiceReference"
 		},
 		"type": "AzureSqlTable",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"tableName": {
+				"value": "@item().tblName",
+				"type": "Expression"
+			}
+		}
 	}
 }
