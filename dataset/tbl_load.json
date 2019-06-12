@@ -1,0 +1,11 @@
+{
+	"name": "tbl_load",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "adftu",
+			"type": "LinkedServiceReference"
+		},
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
