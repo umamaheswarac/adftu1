@@ -69,7 +69,10 @@
 				"name": "shipcountry",
 				"type": "nvarchar"
 			}
-		]
+		],
+		"typeProperties": {
+			"tableName": "[HR].[Employees]"
+		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }
