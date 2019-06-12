@@ -37,7 +37,7 @@
 				],
 				"typeProperties": {
 					"items": {
-						"value": "@activity(get_list).output.value",
+						"value": "@activity('get_list').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -55,7 +55,10 @@
 							"typeProperties": {
 								"source": {
 									"type": "SqlServerSource",
-									"sqlReaderQuery": "select * from @{item().tblName"
+									"sqlReaderQuery": {
+										"value": "select * from @{item().tblName}",
+										"type": "Expression"
+									}
 								},
 								"sink": {
 									"type": "AzureSqlSink"
