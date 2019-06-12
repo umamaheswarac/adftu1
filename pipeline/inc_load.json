@@ -1,3 +1,68 @@
 {
-	"name": "inc_load"
+	"name": "inc_load",
+	"properties": {
+		"activities": [
+			{
+				"name": "max_date",
+				"type": "Lookup",
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "select MAX(orderdate) as Max_orderdate from orders1"
+					},
+					"dataset": {
+						"referenceName": "lookup_max_date",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "inc_load",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "max_date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource"
+					},
+					"sink": {
+						"type": "AzureSqlSink"
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "input",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "output",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		]
+	}
 }
