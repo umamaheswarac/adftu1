@@ -1,0 +1,15 @@
+{
+	"name": "onprem",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "integrated security=False;data source=DSDELL34501;initial catalog=TSQLV4;user id=sa",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJmZTEzZDg4NS0wNjA0LTQyMWUtOTJlNC02MmU1M2ZjZDZhYzciLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "onprem",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
