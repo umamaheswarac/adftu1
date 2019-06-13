@@ -37,7 +37,7 @@
 				],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('get_list').output.values",
+						"value": "@activity('get_list').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
