@@ -6,10 +6,10 @@
 			"type": "string",
 			"metadata": "Data Factory Name"
 		},
-		"adftu": {
+		"AzureSQLdb": {
 			"type": "string"
 		},
-		"OnPrem": {
+		"onprem": {
 			"type": "string"
 		}
 	},
@@ -36,10 +36,10 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "select tblName from [dbo].[table_list]"
+								"sqlReaderQuery": "select [tblname],[maxdate],inccolumn\nfrom [dbo].[TblList]"
 							},
 							"dataset": {
-								"referenceName": "tbl_list",
+								"referenceName": "AzureSQL",
 								"type": "DatasetReference"
 							},
 							"firstRowOnly": false
@@ -58,7 +58,7 @@
 						],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('get_list').output.value",
+								"value": "@activity('get_list').output.values",
 								"type": "Expression"
 							},
 							"isSequential": true,
@@ -77,7 +77,7 @@
 										"source": {
 											"type": "SqlServerSource",
 											"sqlReaderQuery": {
-												"value": "select * from @{item().tblName}",
+												"value": "select * from @{item().tblName}\nwhere @{item().inccolumn}>@{item().maxdate}",
 												"type": "Expression"
 											}
 										},
@@ -88,13 +88,13 @@
 									},
 									"inputs": [
 										{
-											"referenceName": "onprem",
+											"referenceName": "input",
 											"type": "DatasetReference"
 										}
 									],
 									"outputs": [
 										{
-											"referenceName": "tbl_load",
+											"referenceName": "output",
 											"type": "DatasetReference"
 										}
 									]
@@ -105,121 +105,65 @@
 				]
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/tbl_list')]",
-				"[concat(variables('factoryId'), '/datasets/onprem')]",
-				"[concat(variables('factoryId'), '/datasets/tbl_load')]"
+				"[concat(variables('factoryId'), '/datasets/AzureSQL')]",
+				"[concat(variables('factoryId'), '/datasets/input')]",
+				"[concat(variables('factoryId'), '/datasets/output')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/tbl_list')]",
+			"name": "[concat(parameters('factoryName'), '/AzureSQL')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "[parameters('adftu')]",
+					"referenceName": "[parameters('AzureSQLdb')]",
 					"type": "LinkedServiceReference"
 				},
 				"type": "AzureSqlTable",
 				"schema": [
 					{
-						"name": "tblName",
-						"type": "nvarchar"
+						"name": "tblname",
+						"type": "varchar"
+					},
+					{
+						"name": "maxdate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
 					}
 				],
 				"typeProperties": {
-					"tableName": "[[dbo].[table_list]"
+					"tableName": "[[dbo].[TblList]"
 				}
 			}
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/onprem')]",
+			"name": "[concat(parameters('factoryName'), '/input')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "[parameters('OnPrem')]",
+					"referenceName": "[parameters('onprem')]",
 					"type": "LinkedServiceReference"
 				},
 				"type": "SqlServerTable",
-				"schema": [
-					{
-						"name": "empid",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "lastname",
-						"type": "nvarchar"
-					},
-					{
-						"name": "firstname",
-						"type": "nvarchar"
-					},
-					{
-						"name": "title",
-						"type": "nvarchar"
-					},
-					{
-						"name": "titleofcourtesy",
-						"type": "nvarchar"
-					},
-					{
-						"name": "birthdate",
-						"type": "date"
-					},
-					{
-						"name": "hiredate",
-						"type": "date"
-					},
-					{
-						"name": "address",
-						"type": "nvarchar"
-					},
-					{
-						"name": "city",
-						"type": "nvarchar"
-					},
-					{
-						"name": "region",
-						"type": "nvarchar"
-					},
-					{
-						"name": "postalcode",
-						"type": "nvarchar"
-					},
-					{
-						"name": "country",
-						"type": "nvarchar"
-					},
-					{
-						"name": "phone",
-						"type": "nvarchar"
-					},
-					{
-						"name": "mgrid",
-						"type": "int",
-						"precision": 10
-					}
-				],
-				"typeProperties": {
-					"tableName": "[[HR].[Employees]"
-				}
+				"schema": []
 			}
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/tbl_load')]",
+			"name": "[concat(parameters('factoryName'), '/output')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "[parameters('adftu')]",
+					"referenceName": "[parameters('AzureSQLdb')]",
 					"type": "LinkedServiceReference"
 				},
 				"type": "AzureSqlTable",
 				"schema": [],
 				"typeProperties": {
 					"tableName": {
-						"value": "@item().tblName",
+						"value": "@item().tblname",
 						"type": "Expression"
 					}
 				}
