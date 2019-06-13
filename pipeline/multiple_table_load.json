@@ -15,10 +15,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select tblName from [dbo].[table_list]"
+						"sqlReaderQuery": "select [tblname],[maxdate],inccolumn\nfrom [dbo].[TblList]"
 					},
 					"dataset": {
-						"referenceName": "tbl_list",
+						"referenceName": "AzureSQL",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
@@ -37,7 +37,7 @@
 				],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('get_list').output.value",
+						"value": "@activity('get_list').output.values",
 						"type": "Expression"
 					},
 					"isSequential": true,
@@ -56,7 +56,7 @@
 								"source": {
 									"type": "SqlServerSource",
 									"sqlReaderQuery": {
-										"value": "select * from @{item().tblName}",
+										"value": "select * from @{item().tblName}\nwhere @{item().inccolumn}>@{item().maxdate}",
 										"type": "Expression"
 									}
 								},
@@ -67,13 +67,13 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "onprem",
+									"referenceName": "input",
 									"type": "DatasetReference"
 								}
 							],
 							"outputs": [
 								{
-									"referenceName": "tbl_load",
+									"referenceName": "output",
 									"type": "DatasetReference"
 								}
 							]
