@@ -1,0 +1,11 @@
+{
+	"name": "input",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "onprem",
+			"type": "LinkedServiceReference"
+		},
+		"type": "SqlServerTable",
+		"schema": []
+	}
+}
