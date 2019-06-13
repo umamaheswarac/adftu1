@@ -56,7 +56,7 @@
 								"source": {
 									"type": "SqlServerSource",
 									"sqlReaderQuery": {
-										"value": "select * from @{item().tblName}\nwhere @item().inccolumn>@item().maxdate",
+										"value": "select * from @{item().tblName}\nwhere @{item().inccolumn}>@{item().maxdate}",
 										"type": "Expression"
 									}
 								},
