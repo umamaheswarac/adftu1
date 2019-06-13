@@ -56,7 +56,7 @@
 								"source": {
 									"type": "SqlServerSource",
 									"sqlReaderQuery": {
-										"value": "select * from @{item().tblName}\n",
+										"value": "select * from @{item().tblName}\nWHERE orderdate > @{item().maxpipeline().Pipelinedate}\n",
 										"type": "Expression"
 									}
 								},
