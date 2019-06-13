@@ -15,7 +15,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select [tblname],[maxdate],inccolumn\nfrom [dbo].[TblList]"
+						"sqlReaderQuery": "select tblname,maxdate,inccolumn\nfrom [dbo].[TblList]"
 					},
 					"dataset": {
 						"referenceName": "AzureSQL",
